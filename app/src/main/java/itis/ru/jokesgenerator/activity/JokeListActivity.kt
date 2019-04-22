@@ -62,19 +62,26 @@ class JokeListActivity : AppCompatActivity() {
     }
 
     private fun observeJokeList() =
-        mViewModel.getJokeList().observe(this, Observer {
+        mViewModel.itemPagedList?.observe(this, Observer {
             when {
-                it?.data != null -> {
-                    adapter?.submitList(it.data as PagedList<Joke>?)
-                }
-                it?.error != null -> {
-                    Snackbar.make(
-                        layout_joke_list, it.error.message
-                            ?: getString(R.string.sb_error), Snackbar.LENGTH_SHORT
-                    )
+                it != null -> {
+                    adapter?.submitList(it)
                 }
             }
         })
+    /* mViewModel.getJokeList().observe(this, Observer {
+         when {
+             it?.data != null -> {
+                 adapter?.submitList(it.data)
+             }
+             it?.error != null -> {
+                 Snackbar.make(
+                     layout_joke_list, it.error.message
+                         ?: getString(R.string.sb_error), Snackbar.LENGTH_SHORT
+                 )
+             }
+         }
+     })*/
 
     private fun observeJokeClick() =
         mViewModel.navigateToDetails.observe(this, Observer { joke ->
@@ -92,11 +99,19 @@ class JokeListActivity : AppCompatActivity() {
             }
         })
 
-    private fun observePullRefresh() {
-        mViewModel.refreshPulled().observe(this, Observer {
+    private fun observePullRefresh() =
+        mViewModel.itemPagedList?.observe(this, Observer {
+            when {
+                it != null -> {
+                    hideProgress()
+                    adapter?.submitList(it)
+                }
+            }
+        })
+       /* mViewModel.refreshPulled().observe(this, Observer {
             when {
                 it?.data != null -> {
-                    adapter?.submitList(it.data as PagedList<Joke>?)
+                    adapter?.submitList(it.data)
                     hideProgress()
                 }
                 it?.error != null -> {
@@ -106,8 +121,8 @@ class JokeListActivity : AppCompatActivity() {
                     )
                 }
             }
-        })
-    }
+        })*/
+
 
     private fun showProgress() {
         swipeContainer.isRefreshing = true

@@ -20,7 +20,7 @@ class JokeListViewModel @Inject constructor(private val jokeRepository: JokeRepo
     val navigateToDetails: LiveData<Event<String>>
         get() = mNavigateToDetails
 
-    private val mJokesLiveData: MutableLiveData<Response<PagedList<Joke>>> = MutableLiveData()
+    private val mJokesLiveData: MutableLiveData<Response<List<Joke>>> = MutableLiveData()
 
     var itemPagedList: LiveData<PagedList<Joke>>? = null
     var liveDataSource: LiveData<PageKeyedDataSource<Int, Joke>>? = null
@@ -42,7 +42,7 @@ class JokeListViewModel @Inject constructor(private val jokeRepository: JokeRepo
         itemPagedList = LivePagedListBuilder(itemDataSourceFactory, config).build()
     }
 
-    fun getJokeList(): LiveData<Response<PagedList<Joke>>> {
+    fun getJokeList(): LiveData<Response<List<Joke>>> {
         jokeRepository.getJokeList()
             .subscribeBy(onSuccess = {
                 mJokesLiveData.value = Response.success(it)
@@ -56,5 +56,5 @@ class JokeListViewModel @Inject constructor(private val jokeRepository: JokeRepo
         mNavigateToDetails.value = Event(joke.text ?: "")
     }
 
-    fun refreshPulled() = getJokeList()
+    fun refreshPulled() = itemPagedList
 }
