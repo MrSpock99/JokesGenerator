@@ -2,4 +2,5 @@
     <string name="app_name">JokesGenerator</string>
     <string name="sb_error">We have a problem</string>
     <string name="transition">myTransition</string>
+    <string name="title_mock_activity">I am stupid mock activity, I can do nothing</string>
 </resources>
