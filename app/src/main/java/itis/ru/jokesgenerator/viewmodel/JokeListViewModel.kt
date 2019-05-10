@@ -11,6 +11,11 @@ import itis.ru.jokesgenerator.api.Response
 import itis.ru.jokesgenerator.data.Joke
 import itis.ru.jokesgenerator.data.JokeRepository
 import itis.ru.jokesgenerator.paging.ItemDataSourceFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 import javax.inject.Inject
 
 class JokeListViewModel @Inject constructor(private val jokeRepository: JokeRepository) :
@@ -42,7 +47,7 @@ class JokeListViewModel @Inject constructor(private val jokeRepository: JokeRepo
         itemPagedList = LivePagedListBuilder(itemDataSourceFactory, config).build()
     }
 
-    fun getJokeList(): LiveData<Response<List<Joke>>> {
+    /*fun getJokeList(): LiveData<Response<List<Joke>>> {
         jokeRepository.getJokeList()
             .subscribeBy(onSuccess = {
                 mJokesLiveData.value = Response.success(it)
@@ -50,7 +55,7 @@ class JokeListViewModel @Inject constructor(private val jokeRepository: JokeRepo
                 mJokesLiveData.value = Response.error(it)
             })
         return mJokesLiveData
-    }
+    }*/
 
     fun onJokeClicked(joke: Joke) {
         mNavigateToDetails.value = Event(joke.text ?: "")
