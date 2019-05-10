@@ -1,21 +1,30 @@
 package itis.ru.jokesgenerator.data
 
-import android.util.Log
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import itis.ru.jokesgenerator.api.JokeGeneratorApi
 import itis.ru.jokesgenerator.database.JokeDataDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.net.UnknownHostException
 
 class JokeRepository constructor(
     private val jokesDao: JokeDataDao,
     private val api: JokeGeneratorApi
 ) {
-    fun getJokeList(): Single<List<Joke>> {
-        return Observable.fromIterable(ITERABLE_ARRAY)
+    suspend fun getJokeList(): List<Joke> = withContext(Dispatchers.IO) {
+        val list: MutableList<Joke> = mutableListOf()
+        try {
+            for (i in 0 until 10) {
+                list.add(api.getRandomJokeAsync().await())
+            }
+        } catch (ex: UnknownHostException) {
+            ex.printStackTrace()
+            return@withContext jokesDao.getAllAsync().await()
+        }
+        jokesDao.insert(list)
+        return@withContext list
+        /*return Observable.fromIterable(ITERABLE_ARRAY)
             .flatMap {
-                api.getRandomJoke()
+                api.getRandomJokeAsync()
             }
             .concatMap {
                 Observable.just(it)
@@ -32,7 +41,7 @@ class JokeRepository constructor(
                 Log.d("MYLOG", it.message)
             }
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())*/
     }
 
     companion object {

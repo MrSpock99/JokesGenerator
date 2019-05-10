@@ -1,6 +1,7 @@
 package itis.ru.jokesgenerator.di.module
 
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import itis.ru.jokesgenerator.api.JokeGeneratorApi
@@ -21,14 +22,18 @@ class NetModule {
     fun provideCallAdapterFactory(): RxJava2CallAdapterFactory = RxJava2CallAdapterFactory.create()
 
     @Provides
+    fun provideCoroutineCallAdapterFactory(): CoroutineCallAdapterFactory = CoroutineCallAdapterFactory()
+
+    @Provides
     fun provideRetrofit(
         baseUrl: String,
         converterFactory: GsonConverterFactory,
-        callAdapterFactory: RxJava2CallAdapterFactory
+        callAdapterFactory: RxJava2CallAdapterFactory,
+        coroutineCallAdapterFactory: CoroutineCallAdapterFactory
     ): Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(converterFactory)
-        .addCallAdapterFactory(callAdapterFactory)
+        .addCallAdapterFactory(coroutineCallAdapterFactory)
         .build()
 
     @Provides

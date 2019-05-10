@@ -1,16 +1,17 @@
 package itis.ru.jokesgenerator.database
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import io.reactivex.Single
 import itis.ru.jokesgenerator.data.Joke
+import kotlinx.coroutines.Deferred
 
 @Dao
 interface JokeDataDao {
     @Query("SELECT * FROM joke")
-    fun getAll(): Single<List<Joke>>
+    fun getAllAsync(): Deferred<List<Joke>>
 
     @Query("SELECT * FROM joke WHERE id = :id")
-    fun getById(id: Int): Single<Joke>
+    fun getByIdAsync(id: Int): Deferred<Joke>
 
     @Query("DELETE FROM joke")
     fun nukeTable()
