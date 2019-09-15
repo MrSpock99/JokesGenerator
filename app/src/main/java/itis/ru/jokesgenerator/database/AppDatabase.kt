@@ -1,7 +1,7 @@
 package itis.ru.jokesgenerator.database
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import itis.ru.jokesgenerator.data.Joke
 
 const val DB_NAME: String = "JOKE.db"

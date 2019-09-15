@@ -1,6 +1,6 @@
 package itis.ru.jokesgenerator.database
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import io.reactivex.Single
 import itis.ru.jokesgenerator.data.Joke
 

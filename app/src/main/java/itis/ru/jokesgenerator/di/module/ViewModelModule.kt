@@ -1,19 +1,19 @@
 package itis.ru.jokesgenerator.di.module
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
 import dagger.multibindings.IntoMap
-import itis.ru.jokesgenerator.viewmodel.JokeListViewModel
+import itis.ru.jokesgenerator.viewmodel.GetJokeViewModel
 import kotlin.reflect.KClass
 
 @Module
 abstract class ViewModelModule {
     @Binds
     @IntoMap
-    @ViewModelKey(JokeListViewModel::class)
-    abstract fun bindMyViewModel(myViewModel: JokeListViewModel): ViewModel
+    @ViewModelKey(GetJokeViewModel::class)
+    abstract fun bindMyViewModel(myViewModel: GetJokeViewModel): ViewModel
 }
 
 @Target(

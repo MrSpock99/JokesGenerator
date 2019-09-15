@@ -35,6 +35,10 @@ class JokeRepository constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getJoke(): Observable<Joke> = api.getRandomJoke()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+
     companion object {
         private val ITERABLE_ARRAY = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
     }
